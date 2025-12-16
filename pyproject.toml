@@ -1,0 +1,90 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "podcast-summary"
+version = "1.0.0"
+description = "一个强大的播客分析和总结工具，支持音频转录、内容分析、多格式导出"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "Podcast Summary Team"}
+]
+keywords = ["podcast", "transcription", "summarization", "ai", "whisper", "claude", "openai"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    # 音频处理
+    "yt-dlp>=2024.1.0",
+    "pydub>=0.25.1",
+    "feedparser>=6.0.10",
+
+    # 语音识别
+    "faster-whisper>=1.0.0",
+    "openai-whisper>=20231117",
+
+    # 说话人识别
+    "pyannote.audio>=3.1.0",
+    "torch>=2.0.0",
+    "torchaudio>=2.0.0",
+
+    # LLM API
+    "anthropic>=0.18.0",
+    "openai>=1.12.0",
+
+    # Notion
+    "notion-client>=2.2.0",
+
+    # CLI 和 Web
+    "click>=8.1.0",
+    "rich>=13.7.0",
+    "streamlit>=1.31.0",
+
+    # 工具
+    "pydantic>=2.6.0",
+    "pydantic-settings>=2.1.0",
+    "python-dotenv>=1.0.0",
+    "aiohttp>=3.9.0",
+    "tenacity>=8.2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "black>=24.1.0",
+    "ruff>=0.2.0",
+]
+
+[project.scripts]
+podcast-cli = "src.main:cli"
+
+[project.urls]
+Homepage = "https://github.com/podcast-summary/podcast-summary"
+Documentation = "https://github.com/podcast-summary/podcast-summary#readme"
+Repository = "https://github.com/podcast-summary/podcast-summary"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[tool.black]
+line-length = 100
+target-version = ['py310']
+
+[tool.ruff]
+line-length = 100
+select = ["E", "F", "I", "N", "W"]
+ignore = ["E501"]

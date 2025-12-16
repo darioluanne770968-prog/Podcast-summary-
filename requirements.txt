@@ -1,0 +1,38 @@
+# 音频处理
+yt-dlp>=2024.1.0
+pydub>=0.25.1
+feedparser>=6.0.10
+
+# 语音识别
+faster-whisper>=1.0.0
+openai-whisper>=20231117
+
+# 说话人识别
+pyannote.audio>=3.1.0
+torch>=2.0.0
+torchaudio>=2.0.0
+
+# LLM API
+anthropic>=0.18.0
+openai>=1.12.0
+
+# Notion 同步
+notion-client>=2.2.0
+
+# CLI 和 Web 界面
+click>=8.1.0
+rich>=13.7.0
+streamlit>=1.31.0
+
+# 工具库
+pydantic>=2.6.0
+pydantic-settings>=2.1.0
+python-dotenv>=1.0.0
+aiohttp>=3.9.0
+tenacity>=8.2.0
+
+# 开发依赖
+pytest>=8.0.0
+pytest-asyncio>=0.23.0
+black>=24.1.0
+ruff>=0.2.0
