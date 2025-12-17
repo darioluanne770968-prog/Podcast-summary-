@@ -1,3 +1,5 @@
+# ============ 核心依赖 ============
+
 # 音频处理
 yt-dlp>=2024.1.0
 pydub>=0.25.1
@@ -16,22 +18,52 @@ torchaudio>=2.0.0
 anthropic>=0.18.0
 openai>=1.12.0
 
-# Notion 同步
-notion-client>=2.2.0
+# ============ 高级音频处理 ============
+noisereduce>=3.0.0
+scipy>=1.12.0
+librosa>=0.10.0
+# demucs  # 可选：音乐分离
+# spleeter  # 可选：音乐分离
 
-# CLI 和 Web 界面
+# ============ 自然语言处理 ============
+spacy>=3.7.0
+# jieba>=0.42.1  # 中文分词
+
+# ============ 多媒体生成 ============
+edge-tts>=6.1.0
+gtts>=2.5.0
+Pillow>=10.0.0
+# python-pptx>=0.6.21  # PPT 生成
+
+# ============ 向量搜索 ============
+numpy>=1.26.0
+# sentence-transformers>=2.2.0  # 本地嵌入
+# chromadb>=0.4.0  # 向量数据库
+# pinecone-client>=3.0.0  # Pinecone 向量数据库
+
+# ============ API 服务 ============
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+python-multipart>=0.0.9
+
+# ============ 导出工具 ============
+notion-client>=2.2.0
+# python-pptx>=0.6.21
+
+# ============ CLI 和 Web 界面 ============
 click>=8.1.0
 rich>=13.7.0
 streamlit>=1.31.0
 
-# 工具库
+# ============ 工具库 ============
 pydantic>=2.6.0
 pydantic-settings>=2.1.0
 python-dotenv>=1.0.0
 aiohttp>=3.9.0
 tenacity>=8.2.0
+croniter>=2.0.0
 
-# 开发依赖
+# ============ 开发依赖 ============
 pytest>=8.0.0
 pytest-asyncio>=0.23.0
 black>=24.1.0

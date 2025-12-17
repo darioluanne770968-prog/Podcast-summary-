@@ -1,0 +1,106 @@
+version: '3.8'
+
+services:
+  # API 服务
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: podcast-api
+    ports:
+      - "8000:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - LLM_PROVIDER=${LLM_PROVIDER:-openai}
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - ./data:/app/data
+      - ./output:/app/output
+    depends_on:
+      - redis
+    restart: unless-stopped
+    networks:
+      - podcast-network
+
+  # Web UI (Streamlit)
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: podcast-web
+    command: streamlit run src/web_app.py --server.port 8501 --server.address 0.0.0.0
+    ports:
+      - "8501:8501"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - LLM_PROVIDER=${LLM_PROVIDER:-openai}
+      - API_URL=http://api:8000
+    volumes:
+      - ./data:/app/data
+      - ./output:/app/output
+    depends_on:
+      - api
+    restart: unless-stopped
+    networks:
+      - podcast-network
+
+  # Redis 缓存和任务队列
+  redis:
+    image: redis:7-alpine
+    container_name: podcast-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    networks:
+      - podcast-network
+
+  # Worker 服务（处理后台任务）
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: podcast-worker
+    command: python -m src.worker
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - LLM_PROVIDER=${LLM_PROVIDER:-openai}
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - ./data:/app/data
+      - ./output:/app/output
+    depends_on:
+      - redis
+    restart: unless-stopped
+    networks:
+      - podcast-network
+    deploy:
+      replicas: 2
+
+  # ChromaDB 向量数据库（可选）
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: podcast-chromadb
+    ports:
+      - "8100:8000"
+    volumes:
+      - chroma-data:/chroma/chroma
+    environment:
+      - ANONYMIZED_TELEMETRY=False
+    restart: unless-stopped
+    networks:
+      - podcast-network
+    profiles:
+      - full
+
+networks:
+  podcast-network:
+    driver: bridge
+
+volumes:
+  redis-data:
+  chroma-data:
